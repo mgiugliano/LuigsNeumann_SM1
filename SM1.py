@@ -157,7 +157,7 @@ def query_position(ser, unit):				# Note: 'ser' is the PySerial obj; unit is =1,
 # note: Example 1 from LN's documentation contains errors. 
 #
 def set_position(ser, unit, pos):
-	#CMD = '#1!GF+01.234,49'
+	#CMD = '#1!GF+01.234,49' (fast)
 	CMD = '#' + str(unit) + '!GF' + pos 	# The command string is assembled here and then
 	ALL = CMD + BCC(CMD) + DLE + ETX 		# concatenated with BCC, DLE, and the ETX characters.
 
@@ -168,6 +168,19 @@ def set_position(ser, unit, pos):
 	data1 = ser.read(1)
 	if (data1 != ACK.encode()):
 		print('set_position(): LM1 did not respond correctly (ACK)')
+
+def set_position_slow(ser, unit, pos):
+	#CMD = '#1!GS+01.234,49' (slow)
+	CMD = '#' + str(unit) + '!GS' + pos 	# The command string is assembled here and then
+	ALL = CMD + BCC(CMD) + DLE + ETX 		# concatenated with BCC, DLE, and the ETX characters.
+
+	initiate_handshaking(ser) 				# Initiating the handshaking...
+	ser.write(ALL.encode())					# We can now send the complete (ALL) package,
+	time.sleep(DELAY)						# then we wait a bit and then we see whether we
+
+	data1 = ser.read(1)
+	if (data1 != ACK.encode()):
+		print('set_position_slow(): LM1 did not respond correctly (ACK)')
 #--------------------------------------------------------------------------------------------------------
 
 
@@ -217,7 +230,7 @@ def step_forward(ser, unit, step_size):
 		newpos = '+' + "{}".format('%08.2F' % p)
 	else:
 	    newpos = "{}".format('%09.2F' % p)
-	print(newpos)
+	#print(newpos)
 	set_position(ser, unit, newpos)
 #--------------------------------------------------------------------------------------------------------
 
@@ -328,4 +341,23 @@ def is_moving(ser, unit):
  return moving
 #--------------------------------------------------------------------------------------------------------
 
+
+#--------------------------------------------------------------------------------------------------------
+# This function, conceived for debugging purposes, makes the (byte) output contained in the SM1's
+# messages more readable. 
+#
+def translate_SM1(msg): 				
+	if msg == STX.encode() :			
+		return '<STX>'
+	elif msg == DLE.encode() :
+		return '<DLE>'
+	elif msg == ACK.encode() :
+		return '<ACK>'
+	elif msg == NAK.encode() :
+		return '<NAK>'
+	elif msg == ETX.encode() :
+		return '<ETX>'
+	else:
+		return msg 	
+#--------------------------------------------------------------------------------------------------------
 

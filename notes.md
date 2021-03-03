@@ -65,7 +65,14 @@ circuit between the pipette and a reference electrode in the bath will be closed
 can be easily detected electrically (e.g. by an oscilloscope).
 
 
+The test we made, with Matteo, led to the following results: 'delta' was measured in the
+coordinates of the micromanipulators (i.e. steps):
 
+delta = 35.83  corresponding to ~100um; therefore 1 step = 2.79 um
+
+The test was repeated going "slowly" and leading to delta = 25.63, thus 1 step = 3.9 um
+
+The latter, in particular, seems in good agreement with my earlier estimate of 4-5 um/step.
 
 
 
