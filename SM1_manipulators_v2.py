@@ -6,7 +6,7 @@
 # Mar 4th 2021 - Michele Giugliano and Matteo Manzati
 
 COMPORT = '/dev/tty.usbserial-AL05TVH5' # Serial port (on Windows, replace it with COM1,2,...)
-REFRESH = 200 # ms - refresh rate for the X,Y,Z motor position queries
+REFRESH = 400 # ms - refresh rate for the X,Y,Z motor position queries
 
 NAME   = 'SM1_manipulators_v2.py'
 HEIGHT = 5    # height of the buttons canvas
